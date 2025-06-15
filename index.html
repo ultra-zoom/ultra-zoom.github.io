@@ -130,7 +130,7 @@
               </span>
               <!-- Dataset Link. -->
               <span class="link-block">
-                <a href="https://github.com/ultrazoom/ultrazoom.github.io"
+                <a href="https://github.com/ultra-zoom/ultra-zoom.github.io"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fab fa-github"></i>
@@ -375,7 +375,9 @@
 
           <h3 class="title is-4" id="dataset">1a. Image Registration</h3>
           <div style="text-align: center;">
-            <img src="./static/images/fig_tracking.png" alt="teaser" style="height: 275px;"/>
+            <img src="./static/images/fig_tracking.png"
+                alt="teaser"
+                style="height: 275px; width: auto; object-fit: contain;" />
           </div>
           <br>
           We concatenate the close-up, connecting video, and full image into a single video, and run a state-of-the-art point tracking method (<a href="https://cotracker3.github.io/">CoTracker3</a>) across the video frames. 
@@ -392,12 +394,28 @@
           <!-- <div style="text-align: center;">
             <img src="./static/images/method_v5_a.png" alt="teaser" style="height: 300px;"/>
           </div> -->
-          <div style="display: flex; align-items: top;">
+<!--           <div style="display: flex; align-items: top;">
             <p style="margin: 0px;">
               For each object-specific dataset, we fine-tune a separate copy of the model to ensure that the generated details are tailored to that object. The model consists of two components: a text-to-image backbone, which takes a noised image and a text prompt, and a super-resolution ControlNet, which conditions on the low-resolution input. We freeze the pretrained weights and fine-tune lightweight low-rank adapters using the same flow matching objective as in pretraining.
             </p>
             <img src="./static/images/method_v5_b.png" style="height: 275px; margin-left: 20px;" />
+          </div> -->
+          <style>
+          @media (max-width: 768px) {
+            .responsive-row {
+              flex-direction: column;
+              align-items: center;
+            }
+          }
+          </style>
+          
+          <div class="responsive-row" style="display: flex; align-items: flex-start; flex-wrap: wrap;">
+            <p style="margin: 0px; flex: 1 1 300px;">
+              For each object-specific dataset, we fine-tune a separate copy of the model to ensure that the generated details are tailored to that object. The model consists of two components: a text-to-image backbone, which takes a noised image and a text prompt, and a super-resolution ControlNet, which conditions on the low-resolution input. We freeze the pretrained weights and fine-tune lightweight low-rank adapters using the same flow matching objective as in pretraining.
+            </p>
+            <img src="./static/images/method_v5_b.png" style="height: 275px; margin-left: 20px;"/>
           </div>
+
 
           <h3 class="title is-4" id="inference">3. Gigapixel Inference</h3>
           <img src="./static/images/method_v5_c.png" alt="teaser" style="height: 100%; "/>
