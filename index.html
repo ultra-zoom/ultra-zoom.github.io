@@ -356,7 +356,7 @@
           <div style="text-align: center;">
             <img src="./static/images/method_v5_a.png"
                 alt="teaser"
-                style="height: 275px; width: auto;" />
+                style="max-height: 275px; height: auto; width: auto;" />
           </div>
 
           <br>
@@ -377,7 +377,7 @@
           <div style="text-align: center;">
             <img src="./static/images/fig_tracking.png"
                 alt="teaser"
-                style="height: 275px; width: auto;" />
+                style="max-height: 275px; height: auto; width: auto;" />
           </div>
           <br>
           We concatenate the close-up, connecting video, and full image into a single video, and run a state-of-the-art point tracking method (<a href="https://cotracker3.github.io/">CoTracker3</a>) across the video frames. 
@@ -410,7 +410,7 @@
           </style>
           
           <div class="responsive-row" style="display: flex; align-items: flex-start; flex-wrap: wrap;">
-            <img src="./static/images/method_v5_b.png" style="height: 275px; margin-right: 20px;"/>
+            <img src="./static/images/method_v5_b.png" style="max-height: 275px; margin-right: 20px;"/>
             <p style="margin: 0px; flex: 1 1 300px;">
               For each object-specific dataset, we fine-tune a separate copy of the model to ensure that the generated details are tailored to that object. The model consists of two components: a text-to-image backbone, which takes a noised image and a text prompt, and a super-resolution ControlNet, which conditions on the low-resolution input. We freeze the pretrained weights and fine-tune lightweight low-rank adapters using the same flow matching objective as in pretraining.
             </p>
@@ -418,7 +418,7 @@
 
 
           <h3 class="title is-4" id="inference">3. Gigapixel Inference</h3>
-          <img src="./static/images/method_v5_c.png" alt="teaser" style="height: 100%; width: auto;"/>
+          <img src="./static/images/method_v5_c.png" alt="teaser" style="max-height: 275px; width: auto; height: auto"/>
           <br><br>
           <p>
             Due to the extremely large output size and limited GPU memory, we split the input into overlapping tiles — as shown here with patches 1, 2, and 3 - and the tiles are processed by the model one by one. To make sure there's no boundary artifacts in the final output, we blend the overlapping regions at the end of each denoising step and after decoding to rgb pixels. We also vary the stride across the denoising steps to avoid repeating the same tile boundaries.
