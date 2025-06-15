@@ -47,45 +47,64 @@
         margin-bottom: 10px;
     }
 
+    .thumbnail-scroll-wrapper {
+      position: relative;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
     .thumbnails-container {
-        margin-top: 20px;
-        display: flex;
-        align-items: center;
-        overflow-x: hidden;
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 5px 40px; /* space for arrows */
     }
 
     .thumbnails {
-        display: flex;
-        transition: transform 0.3s ease;
+      display: flex;
+      gap: 10px;
+      flex-shrink: 0;
     }
 
     .thumbnail {
-        margin: 0 5px;
-        cursor: pointer;
-        opacity: 0.6;
+      flex: 0 0 auto;
+      cursor: pointer;
+      opacity: 0.6;
+      text-align: center;
     }
 
     .thumbnail img {
-        height: 60px;
-        object-fit: cover;
+      height: 60px;
+      width: auto;
+      display: block;
+      object-fit: contain;
     }
 
     .thumbnail.active {
-        opacity: 1;
+      opacity: 1;
     }
 
-    .arrow {
-        cursor: pointer;
-        font-size: 2rem;
-        padding: 0 10px;
+    .scroll-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.9);
+      border: 1px solid #ccc;
+      padding: 5px 8px;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    .scroll-arrow.left {
+      left: 0;
+    }
+
+    .scroll-arrow.right {
+      right: 0;
     }
 
 </style>
 </head>
-
-
-
-
 
 
 <!-- Title and authors -->
@@ -206,7 +225,9 @@
 
 
               <!-- Thumbnails Scroll -->
-              <div class="thumbnails-container">
+              <div class="thumbnail-scroll-wrapper">
+                <div class="scroll-arrow left" onclick="scrollThumbnails(-1)">&#9664;</div>
+                <div class="thumbnails-container" id="thumb-scroll">
                   <!-- <div class="arrow" id="leftArrow">&lt;</div> -->
                   <div class="thumbnails" id="thumbnails">
                     <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/carpet01.html">
@@ -271,10 +292,13 @@
                     </div>
                   </div>
                   <!-- <div class="arrow" id="rightArrow">&gt;</div> -->
+                  <div class="scroll-arrow right" onclick="scrollThumbnails(1)">&#9654;</div>
                   
               </div>
               <p style="font-size: 0.8em; text-align: center; margin-top: 10px;">* White: upscaled region (valid zoom area)</p>
             </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -303,6 +327,15 @@
           currentThumbnail = index;
       });
   });
+
+  function scrollThumbnails(direction) {
+    const container = document.getElementById("thumb-scroll");
+    const scrollAmount = 150;
+    container.scrollBy({
+      left: direction * scrollAmount,
+      behavior: "smooth"
+    });
+  }
 </script>
 
 
