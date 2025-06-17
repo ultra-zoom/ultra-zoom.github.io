@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+
+
+
+<!-- Code head -->
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="UltraZoom">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UltraZoom: Generating Gigapixel Images from Regular Photos</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/ultrazoom-icon.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <style>
+    .gallery-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 80%;
+        margin: auto;
+    }
+
+    .small-video-display {
+        max-height: 200px;
+        margin-bottom: 10px;
+    }
+    .video-display {
+        max-height: 300px;
+        margin-bottom: 10px;
+    }
+
+    .thumbnail-scroll-wrapper {
+      position: relative;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    .thumbnails-container {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 5px 40px; /* space for arrows */
+    }
+
+    .thumbnails {
+      display: flex;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .thumbnail {
+      flex: 0 0 auto;
+      cursor: pointer;
+      opacity: 0.6;
+      text-align: center;
+    }
+
+    .thumbnail img {
+      height: 60px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .thumbnail.active {
+      opacity: 1;
+    }
+
+    .scroll-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.9);
+      border: 1px solid #ccc;
+      padding: 5px 8px;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    .scroll-arrow.left {
+      left: 0;
+    }
+
+    .scroll-arrow.right {
+      right: 0;
+    }
+
+</style>
+</head>
+
+
+<!-- Title and authors -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title"><img src="./static/images/ultrazoom-icon.png" alt="logo" style="width:71px;height:64px;"/>&nbsp;UltraZoom: Generating Gigapixel Images from Regular Photos</h1>
+          <br>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <!-- <span class="link-block">
+                <a href="https://arxiv.org/pdf/2410.00000"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2410.00000"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span> -->
+              <!-- Video Link. -->
+              <span class="link-block">
+                <a href="https://youtu.be/yIlnyoIxNPI"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="https://github.com/ultra-zoom/ultra-zoom.github.io"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Teaser figure -->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/teaser_v3.mov"
+                type="video/mp4">
+      </video>
+      <!-- <img src="./static/images/teaser.png" alt="teaser"/> -->
+      <h2 class="subtitle has-text-centered">
+        
+          <!-- VidPanos upgrades phone panorama mode from image to video. -->
+        <!-- VidPanos converts phone-captured panning videos into video panoramas, instead of image panoramas. -->
+        <span class="dnerf">UltraZoom</span> converts regular-resolution photos into gigapixel-scale images.
+      </h2>
+    </div>
+
+    <p style="text-align: center;">
+      Skip to:  &nbsp;&nbsp;
+      <!-- <a href="#results">[Results]</a> &nbsp; -->
+      <a href="#abstract">[Abstract]</a> &nbsp;
+      <a href="#video">[Video]</a> &nbsp;
+      <a href="#framework">[Method]</a> &nbsp;
+      <a href="#baseline">[Baseline Comparison]</a> &nbsp;
+      <!-- <a href="#acknowledge">[Acknowledgement]</a> &nbsp; -->
+      <!-- <a href="#BibTeX">[Cite]</a> &nbsp; -->
+    </p>
+    <br><br>
+  </div>
+</section>
+
+
+
+
+
+<!-- <section class="section" id="results">
+  <div class="container is-max-desktop"> -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+       <h2 class="title is-3">Results <br> <span style="font-size: 0.7em;">(Interactive Viewer)</span></h2>
+        <div style="background-color: #f0f0f0; padding: 20px;">
+          <div class="gallery-container">
+            <p>Best viewed on a large screen with fast internet • Scroll/Pinch to zoom • Drag to pan • Image might take a few seconds to load after zooming</p><br>
+              <div style="width: 100%; border: 2px solid #ccc; border-radius: 8px; background: white;">
+                  <iframe
+                    id="viewer"
+                    src="https://capybara1234.s3.amazonaws.com/htmls/carpet01.html"
+                    width="100%"
+                  style="height: 50vh;"
+                  frameborder="0"
+                    allowfullscreen
+                  ></iframe>
+              </div>
+
+
+              <!-- Thumbnails Scroll -->
+              <div class="thumbnail-scroll-wrapper">
+                <div class="scroll-arrow left" onclick="scrollThumbnails(-1)">&#9664;</div>
+                <div class="thumbnails-container" id="thumb-scroll">
+                  <!-- <div class="arrow" id="leftArrow">&lt;</div> -->
+                  <div class="thumbnails" id="thumbnails">
+                    <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/carpet01.html">
+                        <img src="./static/images/thumbnails/carpet00.png"> <br>
+                        <img src="./static/images/thumbnails/carpet00_mask.png">
+                    </div>
+                    <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/carpet02.html">
+                      <img src="./static/images/thumbnails/carpet01.jpg"> <br>
+                      <img src="./static/images/thumbnails/carpet01_mask.png">
+                    </div>
+                    <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/pineapple01.html">
+                      <img src="./static/images/thumbnails/pineapple00.jpg"> <br>
+                      <img src="./static/images/thumbnails/pineapple00_mask.png">
+                    </div>
+                    <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/rice01.html">
+                      <img src="./static/images/thumbnails/rice00.jpg"> <br>
+                      <img src="./static/images/thumbnails/rice00_mask.png">
+                    </div>
+                    <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/noodle01.html">
+                      <img src="./static/images/thumbnails/noodle00.jpg"> <br>
+                      <img src="./static/images/thumbnails/noodle00_mask.png">
+                    </div>
+                    <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/noodle02.html">
+                      <img src="./static/images/thumbnails/noodle01.jpg"> <br>
+                      <img src="./static/images/thumbnails/noodle01_mask.png">
+                    </div>
+                    <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/shrub01.html">
+                      <img src="./static/images/thumbnails/shrub00.jpg"> <br>
+                      <img src="./static/images/thumbnails/shrub00_mask.png">
+                    </div>
+                    <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/brick01.html">
+                      <img src="./static/images/thumbnails/brick00.jpg"> <br>
+                      <img src="./static/images/thumbnails/brick00_mask.png">
+                    </div>
+                    <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/wall01.html">
+                      <img src="./static/images/thumbnails/wall01.jpg"> <br>
+                      <img src="./static/images/thumbnails/wall01_mask.png">
+                    </div>
+                    <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/wall02.html">
+                      <img src="./static/images/thumbnails/wall02.jpg"> <br>
+                      <img src="./static/images/thumbnails/wall02_mask.png">
+                    </div>
+                    <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/couch01.html">
+                      <img src="./static/images/thumbnails/couch01.jpg"> <br>
+                      <img src="./static/images/thumbnails/couch01_mask.png">
+                    </div>
+                    <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/pillow01.html">
+                      <img src="./static/images/thumbnails/pillow00.jpg"> <br>
+                      <img src="./static/images/thumbnails/pillow00_mask.png">
+                    </div>
+                    <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/sweater01.html">
+                      <img src="./static/images/thumbnails/sweater01.jpg"> <br>
+                      <img src="./static/images/thumbnails/sweater01_mask.png">
+                    </div>
+                    <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/plush01.html">
+                      <img src="./static/images/thumbnails/plush04.jpg"> <br>
+                      <img src="./static/images/thumbnails/plush04_mask.png">
+                    </div>
+                    <div class="thumbnail active" viewer-url="https://capybara1234.s3.amazonaws.com/htmls/keyboard01.html">
+                      <img src="./static/images/thumbnails/keyboard00.jpg"> <br>
+                      <img src="./static/images/thumbnails/keyboard00_mask.png">
+                    </div>
+                  </div>
+                  <!-- <div class="arrow" id="rightArrow">&gt;</div> -->
+                  <div class="scroll-arrow right" onclick="scrollThumbnails(1)">&#9654;</div>
+                  
+              </div>
+              <p style="font-size: 0.8em; text-align: center; margin-top: 10px;">* White: upscaled region (valid zoom area)</p>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- </div>
+</section> -->
+
+
+<script>
+  const viewer = document.getElementById('viewer');
+  const thumbnails = document.querySelectorAll('.thumbnail');
+  let currentThumbnail = 0;
+
+  // Function to change the main video based on the clicked thumbnail
+  thumbnails.forEach((thumbnail, index) => {
+      thumbnail.addEventListener('click', function () {
+          // Remove active class from all thumbnails
+          thumbnails.forEach(tn => tn.classList.remove('active'));
+
+          // Add active class to the clicked thumbnail
+          this.classList.add('active');
+
+          // Change main video source
+          viewer.src = this.getAttribute('viewer-url');
+
+          // Update the current thumbnail index
+          currentThumbnail = index;
+      });
+  });
+
+  function scrollThumbnails(direction) {
+    const container = document.getElementById("thumb-scroll");
+    const scrollAmount = 150;
+    container.scrollBy({
+      left: direction * scrollAmount,
+      behavior: "smooth"
+    });
+  }
+</script>
+
+
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We present UltraZoom, a system for generating gigapixel-resolution images of objects from casually captured inputs, such as handheld phone photos.
+            Given a full-shot image (global, low-detail) and one or more close-ups (local, high-detail), UltraZoom upscales the full image to match the fine detail and scale of the close-up examples.
+            To achieve this, we construct a per-instance paired dataset from the close-ups and adapt a pretrained generative model to learn object-specific low-to-high resolution mappings.
+            At inference, we apply the model in a sliding window fashion over the full image.
+            Constructing these pairs is non-trivial: it requires registering the close-ups within the full image for scale estimation and degradation alignment.
+            We introduce a simple, robust method for getting registration on arbitrary materials in casual, in-the-wild captures. Together, these components form a system that enables seamless pan and zoom across the entire object, producing consistent, photorealistic gigapixel imagery from minimal input.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+    
+
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/yIlnyoIxNPI?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Paper video. -->
+
+  </div>
+</section>
+
+<section class="section" id="framework">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">How it works</h2>
+        <div class="content has-text-justified">
+          <p>
+            Our system consists of three stages: <a href="#dataset">Dataset Construction</a>, <a href="#fine-tuning">Per-Instance Fine-Tuning</a>, and <a href="#inference">Gigapixel Inference</a>.
+          </p>
+
+          <h3 class="title is-4" id="dataset">1. Dataset Construction</h3>
+          <div style="text-align: center;">
+            <img src="./static/images/method_v5_a.png"
+                alt="teaser"
+                style="max-height: 275px; height: auto; width: auto;" />
+          </div>
+
+          <br>
+          <p>    
+            We use an iPhone with macro-lens mode for data collection. Given an object, we capture:
+            <ol>
+              <li>A minimal collection of close-up images<sub>①</sub> (one is sufficient in this example) to cover fine surface details</li>
+              <li>A full-view image<sub>③</sub> that serves as the test-time input for upscaling</li>
+              <li>A video<sub>②</sub> that connects the two views</li>
+            </ol>  
+            <!-- <br><br> -->
+            We then extract random patches from the close-up and degrade them to mimic the appearance of patches from the full-view image. These degraded-original pairs serve as input-output training data for per-instance fine-tuning. Accurate degradation is crucial for the model to generalize well at test time.
+            <br><br>
+            The degradation process involves: (1) estimating the relative scale between the close-up and the full image for accurate downscaling, and (2) identifying the region in the full image that corresponds to the close-up, to match color statistics and other degradation characteristics. Both steps rely on image registration, which we describe next.
+          </p>
+
+          <h3 class="title is-4" id="dataset">1a. Image Registration</h3>
+          <div style="text-align: center;">
+            <img src="./static/images/fig_tracking.png"
+                alt="teaser"
+                style="max-height: 275px; height: auto; width: auto;" />
+          </div>
+          <br>
+          We concatenate the close-up, connecting video, and full image into a single video, and run a state-of-the-art point tracking method (<a href="https://cotracker3.github.io/">CoTracker3</a>) across the video frames. 
+          The points are reinitialized every 100 frames to keep the tracking stable, as the content changes very quickly.
+
+          We break the video into segments, separated by the points reinitialization, and estimate a 2D similarity transform between the first and last frame of each segment using RANSAC. By chaining the segment-level transforms, we now have the full transformation that registers the close-up in the full image. 
+
+
+
+
+
+
+          <h3 class="title is-4" id="spatial">2. Per-Instance Fine-Tuning</h3>
+          <!-- <div style="text-align: center;">
+            <img src="./static/images/method_v5_a.png" alt="teaser" style="height: 300px;"/>
+          </div> -->
+<!--           <div style="display: flex; align-items: top;">
+            <p style="margin: 0px;">
+              For each object-specific dataset, we fine-tune a separate copy of the model to ensure that the generated details are tailored to that object. The model consists of two components: a text-to-image backbone, which takes a noised image and a text prompt, and a super-resolution ControlNet, which conditions on the low-resolution input. We freeze the pretrained weights and fine-tune lightweight low-rank adapters using the same flow matching objective as in pretraining.
+            </p>
+            <img src="./static/images/method_v5_b.png" style="height: 275px; margin-left: 20px;" />
+          </div> -->
+          <style>
+          @media (max-width: 768px) {
+            .responsive-row {
+              flex-direction: column;
+              align-items: center;
+            }
+          }
+          </style>
+          
+          <div class="responsive-row" style="display: flex; align-items: flex-start; flex-wrap: wrap;">
+            <img src="./static/images/method_v5_b.png" style="max-height: 275px; margin-right: 20px;"/>
+            <p style="margin: 0px; flex: 1 1 300px;">
+              For each object-specific dataset, we fine-tune a separate copy of the model to ensure that the generated details are tailored to that object. The model consists of two components: a text-to-image backbone, which takes a noised image and a text prompt, and a super-resolution ControlNet, which conditions on the low-resolution input. We freeze the pretrained weights and fine-tune lightweight low-rank adapters using the same flow matching objective as in pretraining.
+            </p>
+          </div>
+
+
+          <h3 class="title is-4" id="inference">3. Gigapixel Inference</h3>
+          <img src="./static/images/method_v5_c.png" alt="teaser" style="max-height: 275px; width: auto; height: auto"/>
+          <br><br>
+          <p>
+            Due to the extremely large output size and limited GPU memory, we split the input into overlapping tiles — as shown here with patches 1, 2, and 3 - and the tiles are processed by the model one by one. To make sure there's no boundary artifacts in the final output, we blend the overlapping regions at the end of each denoising step and after decoding to rgb pixels. We also vary the stride across the denoising steps to avoid repeating the same tile boundaries.
+            <br><br>
+            In the end, we have a seamless, gigapixel-resolution output that closely approximates a real captured gigapixel image.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="baseline">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Baseline Comparison</h2>
+          <div class="content has-text-justified">
+            <img src="./static/images/results_v6.png"/>
+            <p>
+We compare our method with three baselines across several examples: each row corresponds to a different object, ordered from low to high scale. The first two columns show the full-view image with the input patch location (green box) and the low-resolution patch bicubic-upsampled to 1024×1024. The next four columns display results from the three baselines and our method. The final column shows the closest matching reference patch from the close-up image, located via our estimated registration. Note that the input patch and the reference patch are not pixel-aligned, as they come from separate captures taken at different distances.
+<br><br>
+Qualitatively, our method achieves the highest visual fidelity and consistency with the reference. Even when provided with our estimated scale, ContinuousSR and Thera, two general-purpose, arbitrary-scale super-resolution models, struggle due to domain gaps in scale and field of view. ZeDuSR also performs per-instance fine-tuning, but constructs paired data by aligning close-up and full-shot images. Even with our estimated registration, this alignment often fails due to significant appearance differences (e.g., foreshortening, disocclusion). In contrast, our approach generates training pairs solely from the close-up via degradation alignment, which guarantees pixel-alignment between input and output.
+
+            </p>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- <section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>
+</code></pre>
+  </div>
+</section> -->
+
+<!-- <section class="section" id="acknowledge"></section>
+  <div class="container is-max-desktop content">
+    <h2 class="title">Acknowledgement</h2>
+      We thank.
+  </div>
+</section> -->
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website template is from <a
+              href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<button type="button" onclick="topFunction()" id="myBtn" title="Go to top">Top</button> 
+
+</body>
+</html>
