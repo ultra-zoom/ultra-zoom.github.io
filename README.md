@@ -7,6 +7,5 @@ This is the official repository for the paper, "UltraZoom: Generating Gigapixel 
 
 ### To be released
 - [ ] Trained models & Evaluation code
-- [ ] Training code
-- [ ] Inference code
+- [ ] Preprocess/Train/Inference code
 - [ ] Data
