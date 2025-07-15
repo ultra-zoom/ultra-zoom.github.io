@@ -6,6 +6,10 @@ This is the official repository for the paper, "UltraZoom: Generating Gigapixel 
 <img src="./assets/teaser_v3.gif"/>
 
 ### Quickstart
+
+#### 0. Compute Requirement
+Training requires an A100 (80GB) or similar/higher. Inference runs on an A40 (40GB) or similar/higher.
+
 #### 1. Installation
 ```
 export ROOT=<path to repository>
@@ -84,8 +88,14 @@ python src/inference.py \
 #### 4. Example Train/Inference Output
 We provide the trained checkpoint and inference output for the example pineapple capture. Download [here](https://drive.google.com/file/d/1ucCqIuqtb7e2G4sAUsQ2-Ly8ipj6mfHE/view?usp=drive_link).
 
+### Data
+We release a preliminary version of the [data](https://drive.google.com/file/d/1BOgFL676ouGMsS_HvbKLfxG4tsXVCOsY/view?usp=drive_link), which includes all necessary files but is not yet organized for direct compatibility with the `UltraZoomDataset` class in `src/train.py`. The release contains the original captures (close-ups, full images, and videos) along with processed outputs such as color-matched images, video point tracking results, and estimated scales (`final_scale.txt`).
+
+A properly organized version will be released soon. In the meantime, this version can be useful if you need to start development right away.
+
 ### Release Todos
 - [x] Example data/checkpoint, train/inference code
+- [x] Preliminary data release
 - [ ] Preprocess code & instructions for custom data
 - [ ] Paper evaluation code
 - [ ] All data/checkpoints
